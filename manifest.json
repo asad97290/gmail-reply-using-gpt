@@ -1,0 +1,31 @@
+{
+    "manifest_version": 3,
+    "name": "Reply Gmail using Chat Gpt",
+    "version": "1.1",
+    "author": "Asadullah khan <asadmuhammad427@gmail.com>",
+
+    "description": "A extension which helps you to reply email using Chat gpt",
+
+    "content_scripts": [
+        {
+            "matches": [ "*://mail.google.com/*" ],
+            "js": [
+                "src/extensionInjector.js"
+            ],
+            "run_at": "document_start"
+        }
+    ],
+
+    "web_accessible_resources": [{
+        "resources": [
+            "dist/gmailJsLoader.js",
+            "dist/extension.js",
+            "dist/gmailJsLoader.js.map",
+            "dist/extension.js.map"
+        ],
+        "matches": ["<all_urls>"]
+    }],
+    "host_permissions": [
+        "https://*/*"
+    ]
+}
