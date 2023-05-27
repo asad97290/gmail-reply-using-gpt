@@ -26,86 +26,88 @@ function startExtension(gmail) {
     });
 
     gmail.observe.on("compose", (compose) => {
-      addCustomButton(emailData);
       console.log("New compose window is opened!", compose);
+      addCustomButton(emailData);
     });
   });
 }
 
 function addCustomButton(emailData) {
-  const sendButton = document.querySelector("td.gU.Up");
+  const sendButton = document.querySelector("tr.btC");
   if (sendButton) {
-    const customButton = document.createElement("button");
+    if (!document.querySelector("td.custom-button")) {
+      const divHide = document.createElement("div");
+      divHide.setAttribute("id", "tHide");
+      document.body.appendChild(divHide);
 
-    const divHide = document.createElement("div");
-    divHide.setAttribute("id", "tHide");
-    document.body.appendChild(divHide);
+      const customButton = document.createElement("td");
+      customButton.innerText = "Magic 🪄";
+      customButton.classList.add("custom-button");
+      customButton.style.marginLeft = "8px";
+      customButton.style.marginRight = "8px";
+      customButton.style.padding = "8px 16px";
+      customButton.style.fontSize = "14px";
+      customButton.style.fontWeight = "bold";
+      customButton.style.textAlign = "center";
+      customButton.style.border = "none";
+      customButton.style.borderRadius = "20px";
+      customButton.style.backgroundColor = "#EA4335";
+      customButton.style.color = "#fff";
+      customButton.style.cursor = "pointer";
+      customButton.style.zIndex=999;
 
-    customButton.innerText = "Magic 🪄";
-
-    customButton.classList.add("custom-button");
-    customButton.style.marginLeft = "8px";
-    customButton.style.padding = "8px 16px";
-    customButton.style.fontSize = "14px";
-    customButton.style.fontWeight = "bold";
-    customButton.style.textAlign = "center";
-    customButton.style.border = "none";
-    customButton.style.borderRadius = "20px";
-    customButton.style.backgroundColor = "#EA4335";
-    customButton.style.color = "#fff";
-    customButton.style.cursor = "pointer";
-
-    // Add your custom logic when the button is clicked
-    customButton.addEventListener("click", async (e) => {
-      e.preventDefault();
-      let text = htmlToText(emailData.content_html);
-      let myPrompt = document.querySelectorAll('[role="textbox"]')[0].innerText;
-      // Your custom code here
-      let prompt = `==== Important ==== 
+      // Add your custom logic when the button is clicked
+      customButton.addEventListener("click", async (e) => {
+        e.preventDefault();
+        let text = htmlToText(emailData.content_html);
+        let myPrompt =
+          document.querySelectorAll('[role="textbox"]')[0].innerText;
+        // Your custom code here
+        let prompt = `==== Important ==== 
         Reply to previous email from 
-        ${emailData.from.name}<${emailData.from.address}>
+        ${emailData.from.name}, ${emailData.from.address}
         in a human voice in perfect English, as someone with a charismatic personality, 
         that is extremely professional and concise with their language.
         which says:
         ${myPrompt.substring(0, 1000)}
-        signed by me ${emailData.to[0].name}<${emailData.to[0].address}> 
+        this is my email ${emailData.to[0].address}, ${emailData.to[0].name} 
         ==== end of important ====
         this is previous email for context reference:
         ==== start of reference ====
         ${text.substring(0, 2000)}
         ==== end of reference ====`;
 
+        document.querySelectorAll('[role="textbox"]')[0].innerText =
+          "aabra ka dabra 🪄";
 
-      document.querySelectorAll('[role="textbox"]')[0].innerText =
-        "aabra ka dabra 🪄";
-
-      try {
-        let { data } = await axios.post(
-          "https://gpt-backend-tau.vercel.app/api/chat",
-          {
-            messages: [
-              {
-                role: "user",
-                content: prompt,
-              },
-            ],
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
+        try {
+          let { data } = await axios.post(
+            "https://gpt-backend-tau.vercel.app/api/chat",
+            {
+              messages: [
+                {
+                  role: "user",
+                  content: prompt,
+                },
+              ],
             },
-          }
-        );
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
 
-        document.querySelectorAll('[role="textbox"]')[0].innerText =
-          data.response[0].message.content;
-      } catch (error) {
-        document.querySelectorAll('[role="textbox"]')[0].innerText =
-          "Error" + error.message;
-      }
-    });
+          document.querySelectorAll('[role="textbox"]')[0].innerText =
+            data.response[0].message.content;
+        } catch (error) {
+          document.querySelectorAll('[role="textbox"]')[0].innerText =
+            "Error" + error.message;
+        }
+      });
 
-    sendButton.parentNode.insertBefore(customButton, sendButton.nextSibling);
+      sendButton.insertBefore(customButton, sendButton.firstChild);
+    }
   }
 }
 
@@ -153,3 +155,5 @@ function htmlToText(contentHtml) {
   htmlCode = htmlCode.trim();
   return htmlCode;
 }
+
+
