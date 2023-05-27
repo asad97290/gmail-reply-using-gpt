@@ -41,7 +41,7 @@ function addCustomButton(emailData) {
     divHide.setAttribute("id", "tHide");
     document.body.appendChild(divHide);
 
-    customButton.innerText = "Reply GPT";
+    customButton.innerText = "Magic 🪄";
 
     customButton.classList.add("custom-button");
     customButton.style.marginLeft = "8px";
@@ -50,37 +50,34 @@ function addCustomButton(emailData) {
     customButton.style.fontWeight = "bold";
     customButton.style.textAlign = "center";
     customButton.style.border = "none";
-    customButton.style.borderRadius = "4px";
-    customButton.style.backgroundColor = "#0b57d0";
+    customButton.style.borderRadius = "20px";
+    customButton.style.backgroundColor = "#EA4335";
     customButton.style.color = "#fff";
     customButton.style.cursor = "pointer";
 
     // Add your custom logic when the button is clicked
     customButton.addEventListener("click", async (e) => {
       e.preventDefault();
-
       let text = htmlToText(emailData.content_html);
       let myPrompt = document.querySelectorAll('[role="textbox"]')[0].innerText;
       // Your custom code here
       let prompt = `==== Important ==== 
-        Reply to previous email from email:${emailData.from.address}, name:${
-        emailData.from.name
-      }
-        with a long and polite email which says:
+        Reply to previous email from 
+        ${emailData.from.name}<${emailData.from.address}>
+        in a human voice in perfect English, as someone with a charismatic personality, 
+        that is extremely professional and concise with their language.
+        which says:
         ${myPrompt.substring(0, 1000)}
-        signed by me email:${emailData.to[0].address}, name:${
-        emailData.to[0].name
-      }
-
+        signed by me ${emailData.to[0].name}<${emailData.to[0].address}> 
         ==== end of important ====
         this is previous email for context reference:
+        ==== start of reference ====
         ${text.substring(0, 2000)}
-        this is the subject "${emailData.subject}"
         ==== end of reference ====`;
 
 
       document.querySelectorAll('[role="textbox"]')[0].innerText =
-        "Thinking...";
+        "aabra ka dabra 🪄";
 
       try {
         let { data } = await axios.post(
