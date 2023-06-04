@@ -82,7 +82,7 @@ function addCustomButton(emailData) {
 
         try {
           let { data } = await axios.post(
-            "https://gpt-backend-tau.vercel.app/api/chat",
+            "https://backend-chat-any-file.vercel.app/api/openChat",
             {
               messages: [
                 {
@@ -99,7 +99,7 @@ function addCustomButton(emailData) {
           );
 
           document.querySelectorAll('[role="textbox"]')[0].innerText =
-            data.response[0].message.content;
+            data.response.content;
         } catch (error) {
           document.querySelectorAll('[role="textbox"]')[0].innerText =
             "Error" + error.message;
