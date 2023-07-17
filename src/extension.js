@@ -60,6 +60,7 @@ function addCustomButton(emailData) {
       customButton.addEventListener("click", async (e) => {
         e.preventDefault();
         let text = htmlToText(emailData.content_html);
+        
         let myPrompt =
           document.querySelectorAll('[role="textbox"]')[0].innerText;
         // Your custom code here
@@ -102,7 +103,7 @@ function addCustomButton(emailData) {
             data.response.content;
         } catch (error) {
           document.querySelectorAll('[role="textbox"]')[0].innerText =
-            "Error" + error.message;
+            ""
         }
       });
 
